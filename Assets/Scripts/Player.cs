@@ -8,18 +8,18 @@ public class Player : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Rigidbody rb;
-    public float speed;
     
 
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
                 agent.SetDestination(hit.point);
             }
         }
+
+
     }  
 }
 
