@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Rigidbody rb;
+
+    public float blinkReset;
+    public float blink;
+
+    private Camera cam;
     
 
     void Start()
@@ -15,11 +20,13 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
+        blink = blinkReset;
+        cam = Camera.main;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -29,40 +36,22 @@ public class Player : MonoBehaviour
             }
         }
 
+        if(Input.GetMouseButton(1))
+        {
+            blink = 0;
+        }
 
+        if(blink <= 0)
+        {
+            cam.enabled = false;
+        }
+
+        if(blink <= -0.1)
+        {
+            blink = blinkReset;
+            cam.enabled = true;
+        }
+
+        blink -= Time.deltaTime;
     }  
 }
-
-/*public Vector2 targetPos;
-
- if (targetPos != new Vector2(0, 0))
-        {
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, speed* Time.deltaTime);
-        }
-
-        if (transform.position.x == targetPos.x && transform.position.y == targetPos.y)
-        {
-            targetPos = new Vector2(0, 0);
-        }
-
-
-void OnGUI()
-{
-    Vector2 mousePos = new Vector2();
-
-    mousePos.x = Event.current.mousePosition.x;
-    mousePos.y = Camera.main.pixelHeight - Event.current.mousePosition.y;
-
-    Vector2 point = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0.0f));
-
-    if (Input.GetMouseButtonDown(0))
-    {
-        targetPos = point;
-    }
-}
-
-private void OnCollisionStay2D(Collision2D collision)
-{
-    rb.velocity = new Vector2(0, 0);
-    targetPos = new Vector2(0, 0);
-}*/
