@@ -9,6 +9,9 @@ public class SCP173 : MonoBehaviour
     public GameObject player;
     private Camera cam;
 
+    public GameObject clonePrefab;
+    private GameObject clone;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -25,6 +28,10 @@ public class SCP173 : MonoBehaviour
             {
                 agent.isStopped = false;
                 agent.SetDestination(player.transform.position);
+
+                gameObject.GetComponent<MeshRenderer>().enabled = false;
+                Instantiate(clonePrefab, transform.position, transform.rotation);
+
                 Debug.DrawRay(transform.position, player.transform.position * hit.distance, Color.blue);
             }
 
@@ -32,6 +39,9 @@ public class SCP173 : MonoBehaviour
             {
                 agent.isStopped = true;
                 Debug.Log("Player");
+
+
+
                 Debug.DrawRay(transform.position, player.transform.position * hit.distance, Color.red);
             }
         }
